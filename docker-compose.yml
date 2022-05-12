@@ -19,7 +19,6 @@ services:
       - webaccess
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "/opt/traefik/log/:/log/"
 
   whoami:
     image: "traefik/whoami"
