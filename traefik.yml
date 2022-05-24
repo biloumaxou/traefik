@@ -1,15 +1,6 @@
-global:
-  sendAnonymousUsage: false
-
-accessLog:
-  filePath: "/etc/traefik/logs/access.log"
-  fields:
-    headers:
-      names:
-        User-Agent: keep
-
 api:
   dashboard: true
+  debug: true
 
 entryPoints:
   web:
@@ -27,12 +18,12 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
   file:
-    directory: "/etc/traefik/conf/"
+    filename: "/config.yml"
     watch: true
 
 certificatesResolvers:
-  letsEncrypt:
+  letsencrypt:
     acme:
-      email: "maxime@crouzet.io"  # Email address used for registration
-      storage: "/letsencrypt/acme.json"    # File or key used for certificates storage
+      email: "maxime@crouzet.io"
+      storage: "acme.json"
       tlsChallenge: {}
