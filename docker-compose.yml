@@ -5,30 +5,25 @@ services:
     image: "traefik:v2.6.6"
     container_name: "traefik"
     restart: always
-    volumes:
-      # READ ONLY (ro) - Mapping /etc/localtime to ensure that the container clock is in sync with the host
-      - "/etc/localtime:/etc/localtime:ro"
-      # READ ONLY (ro) - Mapping STATIC Configurations
-      - "${CONTAINERPATH}/traefik.yml:/etc/traefik/traefik.yml:ro"
-      # READ ONLY (ro) - Mapping DYNAMIC Configurations
-      - "${CONTAINERPATH}/conf:/etc/traefik/conf:ro"
-      # READ WRITE (rw) - Mapping LOGS
-      - "${CONTAINERPATH}/logs:/etc/traefik/logs:rw"
-      # READ WRITE (rw) - Mapping CERTS
-      - "${CONTAINERPATH}/acme.json:/letsencrypt/acme.json:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - webaccess
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "${CONTAINERPATH}/traefik.yml:/traefik.yml:ro"
+      - "${CONTAINERPATH}/acme.json:/acme.json:rw"
+      - "${CONTAINERPATH}/config.yml:/config.yml:ro"
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.traefik-https.entrypoints=websecure'
-      - 'traefik.http.routers.traefik-https.rule=Host(`traefik.mobilab.cloud`)'
-      - 'traefik.http.routers.traefik-https.service=api@internal'
-      - 'traefik.http.routers.traefik-https.tls=true'
-      - 'traefik.http.routers.traefik-https.tls.certresolver=letsencrypt'
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.mobilab.cloud`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
 networks:
   webaccess:
