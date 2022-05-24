@@ -15,9 +15,9 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "${CONTAINERPATH}/traefik.yml:/traefik.yml:ro"
-      - "${CONTAINERPATH}/acme.json:/acme.json:rw"
-      - "${CONTAINERPATH}/config.yml:/config.yml:ro"
+      - "${CONTAINER_TRAEFIK_PATH}/traefik.yml:/traefik.yml:ro"
+      - "${CONTAINER_TRAEFIK_PATH}/acme.json:/acme.json:rw"
+      - "${CONTAINER_TRAEFIK_PATH}/config.yml:/config.yml:ro"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=websecure"
@@ -29,7 +29,7 @@ services:
       - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
   portainer:
-    image: "portainer:portainer-ce"
+    image: "portainer/portainer-ce"
     container_name: "portainer"
     restart: unless-stopped
     security_opt:
@@ -37,9 +37,9 @@ services:
     networks:
       - proxy
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./portainer-data:/data
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "${CONTAINER_PORTAINER_PATH}:/data"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=websecure"
