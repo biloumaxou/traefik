@@ -20,6 +20,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.rule=Host(`traefik.mobilab.cloud`)"
+      - "traefik.http.routers.traefik.middlewares=SecHeader@file"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
