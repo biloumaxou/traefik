@@ -1,3 +1,16 @@
+http:
+  middlewares:
+    SecHeader:
+      headers:
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsSeconds: 31536000
+        sslRedirect: true
+        referrerPolicy: "same-origin"
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+
 tls:
   options:
     default:
